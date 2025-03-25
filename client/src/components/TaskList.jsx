@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getTasks, deleteTask, updateTask } from "../api";
+import TaskItem from "./TaskItem.jsx";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -8,7 +9,6 @@ const TaskList = () => {
     const { data } = await getTasks();
     setTasks(data);
   };
-
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -24,17 +24,20 @@ const TaskList = () => {
   };
 
   return (
-    <ul>
-      {tasks.map((task) => (
-        <li key={task._id}>
-          <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>{task.title}</span>
-          <button onClick={() => handleToggleComplete(task._id, task.completed)}>
-            {task.completed ? "Undo" : "Complete"}
-          </button>
-          <button onClick={() => handleDelete(task._id)}>Delete</button>
-        </li>
-      ))}
-    </ul>
+    <div className="mb-4">
+      {tasks.length === 0 ? (
+        <p className="text-center text-muted">No tasks yet. Add some!</p>
+      ) : (
+        tasks.map((task) => (
+          <TaskItem
+            key={task._id}
+            task={task}
+            onDelete={handleDelete}
+            onToggleComplete={handleToggleComplete}
+          />
+        ))
+      )}
+    </div>
   );
 };
 
