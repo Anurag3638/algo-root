@@ -8,9 +8,10 @@ const TaskForm = ({ refreshTasks }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await createTask({ title, description });
+    console.log({title,description});
     refreshTasks();
-    setTitle("");
-    setDescription("");
+    setTitle(title);
+    setDescription(description);
   };
 
   return (
